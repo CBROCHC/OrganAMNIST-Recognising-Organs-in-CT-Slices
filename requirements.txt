@@ -1,0 +1,17 @@
+# Core scientific stack
+numpy
+scipy
+pandas
+matplotlib
+scikit-learn
+xgboost
+
+# Deep learning (torch >= 2.6 is required: the notebook uses torch.accelerator)
+torch>=2.6
+torchvision
+timm
+
+# Dataset helper + notebook runtime
+medmnist>=3.0
+jupyterlab
+ipywidgets

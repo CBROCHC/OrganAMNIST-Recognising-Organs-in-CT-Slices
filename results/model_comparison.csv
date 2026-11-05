@@ -1,0 +1,21 @@
+model,family,notebook_section,lab,val_accuracy_pct,test_accuracy_pct,notes
+Linear regression (PCA K=100),Classical (PCA),6,TL05,,21.72,Labels treated as a continuous target and rounded; test R² = 0.18
+Linear regression + degree-2 polynomials,Classical (PCA),6,TL05,,15.74,Test R² = -0.14; clear overfitting
+LDA (K=120),Classical (PCA),4,TL03,,61.85,Linear decision boundaries; tol tuned with RandomizedSearchCV
+"Logistic regression (K=100, C=0.1)",Classical (PCA),3,TL02,,63.97,Linear baseline; K chosen from the accuracy-vs-K curve
+"Logistic regression, tuned (K=100)",Classical (PCA),5,TL04,77.25,63.93,"Grid search (C=1, tol=1e-4); val = 3-fold CV mean; no gain over baseline"
+Logistic regression + degree-2 polynomials,Classical (PCA),5,TL04,98.41,69.69,"~5,000 features; val = 3-fold CV mean; large CV/test gap = overfitting"
+QDA (K=60),Classical (PCA),4,TL03,,73.89,Best classical model; reg_param=0.0966
+MLP,Flattened pixels,7,TL06,90.54,71.44,"4096-256-128-11, 10 epochs, AdamW lr=1e-3"
+Random Forest,Flattened pixels,11,-,95.24,79.96,100 trees; trains in 52 s
+XGBoost,Flattened pixels,11,-,94.96,81.36,"100 trees, hist method; trains in ~22 min on CPU; macro-F1 0.82"
+CNN (adapted LeNet),CNN from scratch,7,TL06,94.85,83.56,2 conv layers (5x5) + 3 dense; 10 epochs
+CNN2 (BatchNorm + GAP + Dropout),CNN from scratch,7,TL06,93.50,88.83,3 conv blocks (32/64/128 filters); best model trained from scratch
+"ResNet-50, head only",Pretrained ResNet-50,8,TL07,91.16,83.34,"22,539 of 23.5M parameters trainable; 15 epochs"
+"ResNet-50, full fine-tuning (constant lr)",Pretrained ResNet-50,8,TL07,98.17,90.72,"AdamW lr=1e-3, 10 epochs"
+ResNet-50 + ReduceLROnPlateau,Pretrained ResNet-50,9,TL08,98.00,91.37,"factor 0.5, patience 2; macro-F1 90.76%"
+ResNet-50 + CosineAnnealingLR,Pretrained ResNet-50,9,TL08,98.01,93.22,"lr 1e-3 -> 1e-5 (per-batch); macro-F1 92.58%, AUC 0.9959"
+"ResNet-50 + Cosine, no augmentation",Pretrained ResNet-50,10,TL09,98.31,94.77,Re-run of the Section 9 setup (different random init)
+ResNet-50 + Cosine + augmentation,Pretrained ResNet-50,10,TL09,98.40,94.97,"Rotation +/-30 deg, translation +/-10%, no flips. Best result"
+MedMNIST v2 reference: ResNet-50 (28x28),Literature,-,-,,93.5,Different resolution and preprocessing; not strictly comparable
+MedMNIST v2 reference: ResNet-50 (224x224),Literature,-,-,,94.7,Different resolution and preprocessing; not strictly comparable
